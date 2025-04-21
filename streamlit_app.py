@@ -1,6 +1,8 @@
 import streamlit as st
 from dotenv import load_dotenv
 import os
+import sys
+import traceback
 
 # Load environment variables
 load_dotenv()
@@ -8,6 +10,25 @@ load_dotenv()
 # Initialize session state for messages
 if "messages" not in st.session_state:
     st.session_state.messages = []
+
+st.set_page_config(
+    page_title="Test App",
+    page_icon="👋",
+    layout="centered"
+)
+
+st.title("Test Application")
+st.write("If you can see this, the app is working!")
+
+# Display some system information
+st.subheader("System Information")
+st.write(f"Python version: {sys.version}")
+st.write(f"Streamlit version: {st.__version__}")
+
+# Add a simple interactive element
+name = st.text_input("Enter your name")
+if name:
+    st.write(f"Hello {name}!")
 
 st.title("MCP Chat Assistant")
 
@@ -57,4 +78,29 @@ st.title("Hello World!")
 st.write("This is a test app")
 
 if st.button("Click me!"):
-    st.write("Button was clicked!") 
+    st.write("Button was clicked!")
+
+try:
+    st.set_page_config(
+        page_title="Test App",
+        page_icon="👋",
+        layout="centered"
+    )
+    
+    st.title("Test Application")
+    st.write("If you can see this, the app is working!")
+    
+    # Display some system information
+    st.subheader("System Information")
+    st.write(f"Python version: {sys.version}")
+    st.write(f"Streamlit version: {st.__version__}")
+    
+    # Add a simple interactive element
+    name = st.text_input("Enter your name")
+    if name:
+        st.write(f"Hello {name}!")
+        
+except Exception as e:
+    st.error("An error occurred!")
+    st.error(str(e))
+    st.code(traceback.format_exc()) 
