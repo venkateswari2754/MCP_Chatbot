@@ -1,0 +1,8 @@
+streamlit
+playwright
+python-dotenv
+requests
+langchain-core
+langchain-groq
+mcp-use
+asyncio 
