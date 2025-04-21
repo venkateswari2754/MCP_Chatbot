@@ -1,12 +1,23 @@
-import streamlit as st
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from mcp_use import MCPAgent, MCPClient
+import streamlit as st
 import os
 import asyncio
 
 # Load environment variables
 load_dotenv()
+
+# Add debug information
+st.write("Debug Info:")
+st.write(f"GROQ_API_KEY exists: {bool(os.getenv('GROQ_API_KEY'))}")
+
+try:
+    # Initialize LLM
+    llm = ChatGroq(model="qwen-qwq-32b")
+    st.write("LLM initialized successfully")
+except Exception as e:
+    st.error(f"Error initializing LLM: {str(e)}")
 
 # Initialize Streamlit state
 if 'agent' not in st.session_state:
@@ -15,9 +26,6 @@ if 'agent' not in st.session_state:
     
     # Initialize the chat
     client = MCPClient.from_config_file(config_file)
-    llm = ChatGroq(model="qwen-qwq-32b")
-    
-    # Create agent
     st.session_state.agent = MCPAgent(llm=llm, client=client, max_steps=15, memory_enabled=True)
     st.session_state.messages = []
 
