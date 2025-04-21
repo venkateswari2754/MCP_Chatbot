@@ -51,4 +51,10 @@ try:
     for file in files:
         st.write(f"- {file}")
 except Exception as e:
-    st.error(f"Error listing directory: {str(e)}") 
+    st.error(f"Error listing directory: {str(e)}")
+
+st.title("Hello World!")
+st.write("This is a test app")
+
+if st.button("Click me!"):
+    st.write("Button was clicked!") 
