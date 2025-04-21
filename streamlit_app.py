@@ -5,7 +5,34 @@ import os
 # Load environment variables
 load_dotenv()
 
-st.title("MCP Chat Assistant - Test Mode")
+# Initialize session state for messages
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+st.title("MCP Chat Assistant")
+
+# Display existing chat messages
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.write(message["content"])
+
+# Chat input
+if prompt := st.chat_input("What would you like to know?"):
+    # Display user message
+    with st.chat_message("user"):
+        st.write(prompt)
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    
+    # Display assistant response
+    with st.chat_message("assistant"):
+        response = f"You said: {prompt}\nThis is a test response. API integration coming soon!"
+        st.write(response)
+        st.session_state.messages.append({"role": "assistant", "content": response})
+
+# Clear chat button
+if st.button("Clear Chat"):
+    st.session_state.messages = []
+    st.rerun()
 
 # Basic environment check
 api_key = os.getenv('GROQ_API_KEY')
