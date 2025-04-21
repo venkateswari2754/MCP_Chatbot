@@ -4,20 +4,57 @@ from mcp_use import MCPAgent, MCPClient
 import streamlit as st
 import os
 import asyncio
+import traceback
 
 # Load environment variables
 load_dotenv()
 
-# Add debug information
-st.write("Debug Info:")
-st.write(f"GROQ_API_KEY exists: {bool(os.getenv('GROQ_API_KEY'))}")
+st.title("MCP Chat Assistant - Debug Mode")
+
+# Debug Information Section
+st.header("Debug Information")
+
+# Environment Check
+st.subheader("Environment Check")
+groq_key = os.getenv('GROQ_API_KEY')
+st.write(f"GROQ_API_KEY exists: {bool(groq_key)}")
+if not groq_key:
+    st.error("GROQ_API_KEY is missing!")
+
+# Package Import Check
+st.subheader("Package Import Check")
+try:
+    from langchain_groq import ChatGroq
+    st.write("✅ langchain_groq imported successfully")
+except Exception as e:
+    st.error(f"❌ Error importing langchain_groq: {str(e)}")
+    st.code(traceback.format_exc())
 
 try:
-    # Initialize LLM
-    llm = ChatGroq(model="qwen-qwq-32b")
-    st.write("LLM initialized successfully")
+    from mcp_use import MCPAgent, MCPClient
+    st.write("✅ mcp_use imported successfully")
 except Exception as e:
-    st.error(f"Error initializing LLM: {str(e)}")
+    st.error(f"❌ Error importing mcp_use: {str(e)}")
+    st.code(traceback.format_exc())
+
+# LLM Initialization Check
+st.subheader("LLM Initialization Check")
+try:
+    llm = ChatGroq(model="qwen-qwq-32b")
+    st.write("✅ LLM initialized successfully")
+except Exception as e:
+    st.error(f"❌ Error initializing LLM: {str(e)}")
+    st.code(traceback.format_exc())
+
+# Config File Check
+st.subheader("Config File Check")
+try:
+    config_file = "browser_mcp.json"
+    with open(config_file, 'r') as f:
+        st.write(f"✅ Config file {config_file} found and readable")
+except Exception as e:
+    st.error(f"❌ Error with config file: {str(e)}")
+    st.code(traceback.format_exc())
 
 # Initialize Streamlit state
 if 'agent' not in st.session_state:
